@@ -1,7 +1,0 @@
-FROM ubuntu:latest
-
-RUN apt clean && apt update && apt update -y
-
-RUN apt install -y vim iputils-ping iproute2 traceroute tcpdump
-
-CMD ["tail", "-f", "/dev/null"]

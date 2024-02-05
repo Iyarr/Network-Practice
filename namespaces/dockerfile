@@ -1,0 +1,8 @@
+FROM ubuntu:latest
+
+RUN apt update
+
+# ip command　を使うために必要
+RUN apt install -y iproute2
+
+CMD ["tail", "-f", "/dev/null"]

@@ -1,0 +1,13 @@
+FROM ubuntu:latest
+
+RUN apt clean && apt update && apt update -y
+
+# 検証用ツール
+RUN apt install -y vim \
+        iputils-ping \
+        iproute2 \
+        traceroute \
+        tcpdump \
+        ufw
+
+CMD ["tail", "-f", "/dev/null"]

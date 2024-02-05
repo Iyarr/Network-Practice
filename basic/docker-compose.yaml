@@ -1,0 +1,43 @@
+version: "3.9"
+
+services:
+  router:
+    container_name: router
+    build: ./router
+    privileged: true
+    networks:
+      #  それぞれネットワークインタフェースに割り当てられる
+      - network1
+      - network2
+
+  s1:
+    container_name: server1
+    build: .
+    privileged: true
+    networks:
+      #  network2がeth0に割り当てられる
+      network1:
+        ipv4_address: 10.0.1.10
+
+  s2:
+    container_name: server2
+    build: .
+    privileged: true
+    networks:
+      #  network2がeth0に割り当てられる
+      network2:
+        ipv4_address: 10.0.2.10
+
+networks:
+  network1:
+    # ipアドレスの設定
+    ipam:
+      driver: default
+      config:
+        - subnet: 10.0.1.0/24
+
+  network2:
+    ipam:
+      driver: default
+      config:
+        - subnet: 10.0.2.0/24
