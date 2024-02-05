@@ -4,10 +4,11 @@ RUN apt clean && apt update && apt update -y
 
 # 検証用ツール
 RUN apt install -y vim \
+        # ping command
         iputils-ping \
+        # ip command
         iproute2 \
+        # traceroute command
         traceroute \
-        tcpdump \
-        ufw
-
-CMD ["tail", "-f", "/dev/null"]
+        # ネットワークパケットをキャプチャして表示するためのユーティリティ
+        tcpdump
