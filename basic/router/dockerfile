@@ -1,4 +1,4 @@
-FROM debian:slim
+FROM debian:bookworm-slim
 
 RUN apt clean && apt update && apt update -y
 
@@ -14,12 +14,6 @@ RUN apt install -y vim \
         tcpdump \
         # firewall
         ufw
-
-RUN apt install -y  netfilter-persistent \
-                    systemctl
-
-RUN sed -i 's/#net.ipv4.ip_forward/net.ipv4.ip_forward/' /etc/sysctl.conf && \
-    sysctl -p
 
 # 正常に実行したが変わらず
 #RUN iptables -A INPUT -p icmp --icmp-type echo-request -j ACCEPT && \

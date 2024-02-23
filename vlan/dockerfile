@@ -1,4 +1,4 @@
-FROM debian:slim
+FROM debian:bookworm-slim
 
 RUN apt clean && apt update && apt update -y
 
