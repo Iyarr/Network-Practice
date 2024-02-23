@@ -1,4 +1,4 @@
-FROM ubuntu:latest
+FROM debian:slim
 
 RUN apt clean && apt update && apt update -y
 
