@@ -1,0 +1,74 @@
+version: "3.9"
+
+services:
+  router:
+    container_name: router
+    build: ./router
+    privileged: true
+    tty: true
+    volumes:
+      - ./init.sh:/home/init.sh
+    command: /home/init.sh router &
+    networks:
+      network1:
+        ipv4_address: 10.0.1.2
+      network2:
+        ipv4_address: 10.0.2.2
+    deploy:
+      resources:
+        limits:
+          cpus: "1.0"
+        reservations:
+          memory: 512M
+
+  s1:
+    container_name: server1
+    build: .
+    privileged: true
+    tty: true
+    volumes:
+      - ./init.sh:/home/init.sh
+    command: /home/init.sh host1 &
+    networks:
+      #  network2がeth0に割り当てられる
+      network1:
+        ipv4_address: 10.0.1.10
+    deploy:
+      resources:
+        limits:
+          cpus: "1.0"
+        reservations:
+          memory: 512M
+
+  s2:
+    container_name: server2
+    build: .
+    privileged: true
+    tty: true
+    volumes:
+      - ./init.sh:/home/init.sh
+    command: /home/init.sh host2 &
+    networks:
+      #  network2がeth0に割り当てられる
+      network2:
+        ipv4_address: 10.0.2.10
+    deploy:
+      resources:
+        limits:
+          cpus: "1.0"
+        reservations:
+          memory: 512M
+
+networks:
+  network1:
+    # ipアドレスの設定
+    ipam:
+      driver: default
+      config:
+        - subnet: 10.0.1.0/24
+
+  network2:
+    ipam:
+      driver: default
+      config:
+        - subnet: 10.0.2.0/24

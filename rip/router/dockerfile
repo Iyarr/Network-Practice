@@ -1,0 +1,23 @@
+FROM debian-slim:latest
+
+RUN apt clean && apt update && apt update -y
+
+# 検証用ツール
+RUN apt install -y vim \
+        # ping command
+        iputils-ping \
+        # ip command
+        iproute2 \
+        # traceroute command
+        traceroute \
+        # ネットワークパケットをキャプチャして表示するためのユーティリティ
+        tcpdump \
+        # ルーティングデーモンというものらしい
+        quagga
+
+RUN apt install -y  netfilter-persistent \
+                    systemctl
+
+RUN sed -i 's/#net.ipv4.ip_forward/net.ipv4.ip_forward/' /etc/sysctl.conf && \
+    # sysctl -p で設定を反映
+    sysctl -p
