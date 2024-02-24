@@ -9,7 +9,7 @@ services:
     volumes:
       - ./router/init.sh:/home/init.sh
     command: /home/init.sh router &
-    #/etc/sysctl.confの設定変更
+    #/proc/sys/net/ipv4/ip_forwardの設定変更
     sysctls:
       net.ipv4.ip_forward: "1"
     networks:
