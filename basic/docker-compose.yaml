@@ -7,7 +7,7 @@ services:
     privileged: true
     tty: true
     volumes:
-      - ./router/init.sh:/home/init.sh
+      - ./init.sh:/home/init.sh
     command: /home/init.sh router &
     #/proc/sys/net/ipv4/ip_forwardの設定変更
     sysctls:
@@ -30,8 +30,8 @@ services:
     privileged: true
     tty: true
     volumes:
-      - ./router/init.sh:/home/init.sh
-    command: /home/init.sh host1 &
+      - ./init.sh:/home/init.sh
+    command: /home/init.sh host 10.0.1.2 &
     networks:
       #  network2がeth0に割り当てられる
       network1:
@@ -49,8 +49,8 @@ services:
     privileged: true
     tty: true
     volumes:
-      - ./router/init.sh:/home/init.sh
-    command: /home/init.sh host2 &
+      - ./init.sh:/home/init.sh
+    command: /home/init.sh host 10.0.2.2 &
     networks:
       #  network2がeth0に割り当てられる
       network2:
