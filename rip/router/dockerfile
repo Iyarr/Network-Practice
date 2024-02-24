@@ -14,10 +14,3 @@ RUN apt install -y vim \
         tcpdump \
         # ルーティングデーモンというものらしい
         quagga
-
-RUN apt install -y  netfilter-persistent \
-                    systemctl
-
-RUN sed -i 's/#net.ipv4.ip_forward/net.ipv4.ip_forward/' /etc/sysctl.conf && \
-    # sysctl -p で設定を反映
-    sysctl -p

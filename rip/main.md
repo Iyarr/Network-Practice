@@ -16,17 +16,50 @@ rip というプロトコルを使用してルーター間のルーティング�
 ```mermaid
 
 flowchart TB;
-    A(Host1)    --Network1--- B;
-    B(Router1)  --Network1--- C;
-    C(Router2)  --Network1--- D;
-    D(Router3)  --Network1--- E(Host2);
-    D --Network1--- B;
+    A(Host0)    --Network0--- B;
+    B(Router0)  --Network1--- C;
+    B           --Network2--- D;
+    C(Router1)  --Network3--- E;
+    D(Router2)  --Network4--- E;
+    E(Router3)  --Network5--- F(Host1);
 
 ```
+
+ip アドレスは以下の通り
+
+- host0
+  - Network0:
+    - 10.0.0.10
+- host1
+  - Network5:
+    - 10.0.5.10
+- router0
+  - Network0:
+    - 10.0.0.2
+  - Network1:
+    - 10.0.1.2
+  - Network2:
+    - 10.0.2.2
+- router1
+  - Network1:
+    - 10.0.1.3
+  - Network3:
+    - 10.0.3.2
+- router2
+  - Network2:
+    - 10.0.2.3
+  - Network4:
+    - 10.0.4.2
+- router3
+  - Network3:
+    - 10.0.3.3
+  - Network4:
+    - 10.0.4.3
+  - Network5:
+    - 10.0.5.2
 
 ## 操作内容
 
 ### router
 
 - RIP デーモンというものが新しく必要になるので quagga というオープンソースをインストールする
-- /etc/sysctl.conf の設定変更で ip パケットの転送を有効化
