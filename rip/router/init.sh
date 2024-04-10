@@ -15,14 +15,15 @@ exitopp
 /etc/init.d/frr start
 
 touch /home/address.txt
+touch /home/ifname.txt
 # ホスト内のIFとIPアドレスを取得
 ip address show | grep "scope global" | \
 while read line; do
     # 正規表現でIF名とIPアドレスを取得
-    # (?:\d{1,3}\.){3}: 非キャプチャグループで1~3桁の数字と.を3回繰り返す
-    # \d{1,3}: 1~3桁の数字
-    # \b: 単語境界
-    echo "$line" >> /home/address.txt
+    echo "$line" | grep -oE '([0-9]{1,3}\.){3}[0-9]{1,3}\/[0-9]{1,2}' >> /home/address.txt
+    echo "$line" | grep -oE '[A-Za-z0-9]*$' >> /home/ifname.txt
+    # echo "10.0.2.2/24" | grep -oE '([0-9]{1,3}\.){3}[0-9]{1,3}\/[0-9]{1,2}'
+    # echo "inet 10.0.0.2/24 brd 10.0.0.255 scope global eth0" | grep -oE '[A-Za-z0-9]*$'
 done
 
 tail -f /dev/null
