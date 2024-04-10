@@ -6,9 +6,9 @@ services:
     build: ./router
     privileged: true
     tty: true
-    volumes:
-      - ./init.sh:/home/init.sh
-    command: /home/init.sh router &
+    environment:
+      - HOSTNAME=router0
+      - RIP_VERSION=1
     #/proc/sys/net/ipv4/ip_forwardの設定変更
     sysctls:
       net.ipv4.ip_forward: "1"
@@ -31,9 +31,9 @@ services:
     build: ./router
     privileged: true
     tty: true
-    volumes:
-      - ./init.sh:/home/init.sh
-    command: /home/init.sh router &
+    environment:
+      - HOSTNAME=router1
+      - RIP_VERSION=1
     #/proc/sys/net/ipv4/ip_forwardの設定変更
     sysctls:
       net.ipv4.ip_forward: "1"
@@ -54,9 +54,9 @@ services:
     build: ./router
     privileged: true
     tty: true
-    volumes:
-      - ./init.sh:/home/init.sh
-    command: /home/init.sh router &
+    environment:
+      - HOSTNAME=router2
+      - RIP_VERSION=1
     #/proc/sys/net/ipv4/ip_forwardの設定変更
     sysctls:
       net.ipv4.ip_forward: "1"
@@ -77,9 +77,9 @@ services:
     build: ./router
     privileged: true
     tty: true
-    volumes:
-      - ./init.sh:/home/init.sh
-    command: /home/init.sh router &
+    environment:
+      - HOSTNAME=router3
+      - RIP_VERSION=1
     #/proc/sys/net/ipv4/ip_forwardの設定変更
     sysctls:
       net.ipv4.ip_forward: "1"
@@ -99,17 +99,15 @@ services:
 
   host0:
     container_name: host0
-    build: .
+    build: ./host
     privileged: true
     tty: true
-    volumes:
-      - ./init.sh:/home/init.sh
-    # デフォルトゲートウェイの設定
-    command: /home/init.sh host 10.0.0.2 &
     networks:
       #  network0がeth0に割り当てられる
       network0:
         ipv4_address: 10.0.0.10
+    environment:
+      - DEFAULT_IP=10.0.0.2
     deploy:
       resources:
         limits:
@@ -119,17 +117,15 @@ services:
 
   host1:
     container_name: host1
-    build: .
+    build: ./host
     privileged: true
     tty: true
-    volumes:
-      - ./init.sh:/home/init.sh
-    # デフォルトゲートウェイの設定
-    command: /home/init.sh host 10.0.5.2 &
     networks:
       #  network3がeth0に割り当てられる
       network3:
-        ipv4_address: 10.0.5.10
+        ipv4_address: 10.0.3.10
+    environment:
+      - DEFAULT_IP=10.0.3.2
     deploy:
       resources:
         limits:
