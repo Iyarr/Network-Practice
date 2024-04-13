@@ -5,26 +5,28 @@ sed -i 's/ripd=no/ripd=yes/' /etc/frr/daemons
 # 設定ファイルの設定
 echo "hostname $HOSTNAME" >> /etc/frr/vtysh.conf
 
-# frr.conf ファイルに追記
-echo "!
-router rip
- version $RIP_VERSION
-exitopp
-!" >> /etc/frr/frr.conf
-
 /etc/init.d/frr start
 
-touch /home/address.txt
-touch /home/ifname.txt
+touch /home/frr.init
+echo "router rip
+version $RIP_VERSION" >> /home/frr.init
 # ホスト内のIFとIPアドレスを取得
 ip address show | grep "scope global" | \
 while read line; do
-    # 正規表現でIF名とIPアドレスを取得
-    echo "$line" | grep -oE '([0-9]{1,3}\.){3}[0-9]{1,3}\/[0-9]{1,2}' >> /home/address.txt
-    echo "$line" | grep -oE '[A-Za-z0-9]*$' >> /home/ifname.txt
-    # echo "10.0.2.2/24" | grep -oE '([0-9]{1,3}\.){3}[0-9]{1,3}\/[0-9]{1,2}'
-    # echo "inet 10.0.0.2/24 brd 10.0.0.255 scope global eth0" | grep -oE '[A-Za-z0-9]*$'
+  # ブロードキャストアドレスを取得
+  brd_address=$(echo "$line" | grep -oE 'brd\s[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}')
+  # ブロードキャストアドレスが10.0.0.255か10.0.5.255の場合はRIPを有効にしない
+  # 詳しくは rip.md の構成図を参照
+  if [ "$brd_address" != "brd 10.0.0.255" ] && [ "$brd_address" != "brd 10.0.5.255" ]; then
+    # インタフェース名を取得
+    ifname=$(echo "$line" | grep -oE '[A-Za-z0-9]*$')
+    echo "network $ifname" >> /home/frr.init
+  else
+    echo "network $ifname" >> /home/frr.init
+  fi
 done
+
+vtysh -c "copy /home/frr.init running-config"
 
 tail -f /dev/null
 
