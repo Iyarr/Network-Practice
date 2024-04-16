@@ -120,6 +120,7 @@ systemctl start frr
 ### FRRouting の設定方法
 
 FRRouting の設定をコンテナ起動時に自動で実行させるための方法を模索した
+初期設定を実行するシェルスクリプトを作成し、コンテナごとに設定ファイルを環境変数をもとに書き替える
 
 #### /etc/frr/frr.conf に設定を記述
 
@@ -143,6 +144,7 @@ Lua というプログラミング言語を使用して設定を読み込ませ�
 #### copy コマンドによる設定ファイルのコピー
 
 vtysh で`copy /file running-config`コマンドを使用することで`/file`に指定したファイルに書かれている設定を反映させるコマンド
+これまで作業しているが、特に支障はない
 
 ```bash
 # /root/frr.init に設定内容を記述
@@ -150,3 +152,5 @@ echo "hostname router0" >> /root/frr.init
 # 設定内容を反映
 vtysh -c "copy /root/frr.conf running-config"
 ```
+
+> 現在は**copy コマンドによる設定ファイルのコピー**によって設定を反映させている
