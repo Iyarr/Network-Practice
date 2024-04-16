@@ -42,12 +42,12 @@ echo deb '[signed-by=/usr/share/keyrings/frrouting.gpg]' https://deb.frrouting.o
 sudo apt update && sudo apt install frr frr-pythontools
 ```
 
-ただこれではビルドに時間がかかるので作業しにくいと思い、他の方法で探してみることにした
+ただこれではビルドに時間がかかるので作業しにくいと思い、他の方法インストールできないか模索してみることにした
 
 #### Docker Hub からイメージを取得
 
 frrouting/frr という Alpine Linux ベースのイメージが Docker Hub に公開されている
-インストールすることができるようだが、これは学習にならないので却下
+インストールすることができるようだが、自力でインストールしたいので却下
 
 #### ソースからビルド
 
@@ -58,6 +58,7 @@ Github からソースを取得してビルドする方法を試してみるこ�
 apt install -y git autoconf automake libtool  wget
 git clone https://github.com/FRRouting/frr.git
 cd frr
+# 使うバージョンのブランチを指定
 git branch stable/9.0 origin/stable/9.0
 git checkout stable/9.0
 git pull origin stable/9.0
@@ -66,7 +67,7 @@ wget https://www.python.org/ftp/python/3.11.1/Python-3.11.1.tar.xz
 tar xJf Python-3.11.1.tar.xz
 ```
 
-結局いろいろやる必要があるので、これも却下
+ここまで作業として進めたが、依存関係のあるパッケージが他にもたくさんあることがわかり、これ以上はビルドに時間がかかるので却下
 
 最終的には公式サイトの手順を使うことにした。
 
