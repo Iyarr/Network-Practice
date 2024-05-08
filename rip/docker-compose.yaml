@@ -1,5 +1,3 @@
-version: "3.9"
-
 services:
   router0:
     container_name: router0
