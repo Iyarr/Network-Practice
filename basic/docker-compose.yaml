@@ -3,7 +3,7 @@ version: "3.9"
 services:
   router:
     container_name: router
-    build: ./router
+    build: ./
     privileged: true
     tty: true
     command: tail -f /dev/null &
@@ -24,7 +24,7 @@ services:
 
   s1:
     container_name: server1
-    build: .
+    build: ./
     privileged: true
     tty: true
     command: >
@@ -45,7 +45,7 @@ services:
 
   s2:
     container_name: server2
-    build: .
+    build: ./
     privileged: true
     tty: true
     command: >

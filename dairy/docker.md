@@ -58,10 +58,12 @@ CMD ["/home/init.sh"]
 
 `CMD`で指定したスクリプトの実行で以下のエラーが発生する
 
-```
+```text
 bash: /home/init.sh: cannot execute: required file not found
 ```
+
 スクリプトの内容も簡単に書いておく
+
 ```bash
 #! /bin/bash
 
